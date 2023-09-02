@@ -6,7 +6,7 @@ ADD go.* ./
 RUN go mod download
 COPY bot.go .
 RUN go build -o /bot
-# CMD [ "/app/bot", "localhost" ]
+
 
 FROM alpine:3.17
 WORKDIR /app
