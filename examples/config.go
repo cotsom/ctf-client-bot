@@ -1,4 +1,4 @@
-package main
+package example
 
 import (
 	"flag"
@@ -38,6 +38,6 @@ func main() {
 		fmt.Printf("Error parsing YAML file: %s\n", err)
 	}
 
-	fmt.Printf("Result: %v\n", yamlConfig.Cookie[0])
+	fmt.Printf("Result: %v\n", yamlConfig.Cookie["test1"])
 
 }

@@ -1,4 +1,6 @@
 domain: localhost
+
 cookie:
-  test1: value1
-  test2: value2
+  session: eyJ1c2VyIjoiYWRtaW4ifQ.ZRHKtg.cpgm7pblOdp3PvDcXHCckLBkLOA
+  
+httpOnly: true

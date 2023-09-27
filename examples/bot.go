@@ -1,6 +1,6 @@
 // Command eval is a chromedp example demonstrating how to evaluate javascript
 // and retrieve the result.
-package main
+package example
 
 import (
 	"context"
