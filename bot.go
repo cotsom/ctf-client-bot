@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bot/config"
 	"context"
 	"fmt"
 	"log"
@@ -34,7 +35,7 @@ func main() {
 func getUrl(w http.ResponseWriter, r *http.Request) {
 	configName := os.Args[1]
 
-	domain, cookie, httpOnly := botConfig.parseyaml(configName)
+	domain, cookie, httpOnly := config.Parseyaml(configName)
 	fmt.Println(domain, cookie, httpOnly)
 
 	query := r.URL.Query()
@@ -56,7 +57,7 @@ func getUrl(w http.ResponseWriter, r *http.Request) {
 
 	// run task list
 	var res string
-	err := chromedp.Run(ctx, setcookies(
+	err := chromedp.Run(ctx, config.Setcookies(
 		&res,
 		domain,
 		cookie,

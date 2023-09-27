@@ -1,4 +1,4 @@
-package botConfig
+package config
 
 import (
 	"context"
@@ -18,7 +18,7 @@ type YamlConfig struct {
 	HttpOnly bool              `yaml:"httpOnly"`
 }
 
-func setcookies(res *string, domain string, cookies map[string]string, httpOnly bool) chromedp.Tasks {
+func Setcookies(res *string, domain string, cookies map[string]string, httpOnly bool) chromedp.Tasks {
 	return chromedp.Tasks{
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			// create cookie expiration
@@ -39,7 +39,7 @@ func setcookies(res *string, domain string, cookies map[string]string, httpOnly 
 	}
 }
 
-func parseyaml(fileName string) (string, map[string]string, bool) {
+func Parseyaml(fileName string) (string, map[string]string, bool) {
 	if fileName == "" {
 		fmt.Println("config file not found")
 		// return
