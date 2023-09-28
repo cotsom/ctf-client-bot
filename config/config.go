@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"time"
@@ -39,10 +40,9 @@ func Setcookies(res *string, domain string, cookies map[string]string, httpOnly 
 	}
 }
 
-func Parseyaml(fileName string) (string, map[string]string, bool) {
+func Parseyaml(fileName string) (*YamlConfig, error) {
 	if fileName == "" {
-		fmt.Println("config file not found")
-		// return
+		return nil, errors.New("config file not found")
 	}
 
 	yamlFile, err := ioutil.ReadFile(fileName)
@@ -57,9 +57,9 @@ func Parseyaml(fileName string) (string, map[string]string, bool) {
 		fmt.Printf("Error parsing YAML file: %s\n", err)
 	}
 
-	domain := yamlConfig.Domain
-	cookie := yamlConfig.Cookie
-	httpOnly := yamlConfig.HttpOnly
+	// domain := yamlConfig.Domain
+	// cookie := yamlConfig.Cookie
+	// httpOnly := yamlConfig.HttpOnly
 
-	return domain, cookie, httpOnly
+	return &yamlConfig, nil
 }

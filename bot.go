@@ -20,9 +20,10 @@ type YamlConfig struct {
 }
 
 func main() {
-	if len(os.Args) < 1 {
-
-	}
+	// if len(os.Args) < 1 {
+	// 	log.Fatal("err")
+	// 	return
+	// }
 
 	http.HandleFunc("/", getUrl)
 
@@ -35,8 +36,12 @@ func main() {
 func getUrl(w http.ResponseWriter, r *http.Request) {
 	configName := os.Args[1]
 
-	domain, cookie, httpOnly := config.Parseyaml(configName)
-	fmt.Println(domain, cookie, httpOnly)
+	// domain, cookie, httpOnly := config.Parseyaml(configName)
+	config, err := config.Parseyaml(configName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// fmt.Println(domain, cookie, httpOnly)
 
 	query := r.URL.Query()
 	url, present := query["url"]
