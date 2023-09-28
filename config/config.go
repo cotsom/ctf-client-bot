@@ -19,17 +19,17 @@ type YamlConfig struct {
 	HttpOnly bool              `yaml:"httpOnly"`
 }
 
-func Setcookies(res *string, domain string, cookies map[string]string, httpOnly bool) chromedp.Tasks {
+func Setcookies(res *string, config YamlConfig) chromedp.Tasks {
 	return chromedp.Tasks{
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			// create cookie expiration
 			expr := cdp.TimeSinceEpoch(time.Now().Add(180 * 24 * time.Hour))
-			for key, element := range cookies {
+			for key, element := range config.Cookie {
 				fmt.Println("Key:", key, "=>", "Element:", element)
 				err := network.SetCookie(key, element).
 					WithExpires(&expr).
-					WithDomain(domain).
-					WithHTTPOnly(httpOnly).
+					WithDomain(config.Domain).
+					WithHTTPOnly(config.HttpOnly).
 					Do(ctx)
 				if err != nil {
 					return err
@@ -48,7 +48,7 @@ func Parseyaml(fileName string) (*YamlConfig, error) {
 	yamlFile, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		fmt.Printf("Error reading YAML file: %s\n", err)
-		// return
+		return nil, errors.New("config file not found")
 	}
 
 	var yamlConfig YamlConfig

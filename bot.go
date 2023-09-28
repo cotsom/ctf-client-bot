@@ -37,7 +37,8 @@ func getUrl(w http.ResponseWriter, r *http.Request) {
 	configName := os.Args[1]
 
 	// domain, cookie, httpOnly := config.Parseyaml(configName)
-	config, err := config.Parseyaml(configName)
+	configFile, err := config.Parseyaml(configName)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -62,11 +63,9 @@ func getUrl(w http.ResponseWriter, r *http.Request) {
 
 	// run task list
 	var res string
-	err := chromedp.Run(ctx, config.Setcookies(
+	err = chromedp.Run(ctx, config.Setcookies(
 		&res,
-		domain,
-		cookie,
-		httpOnly,
+		*configFile,
 	))
 	if err != nil {
 		log.Fatal(err)
