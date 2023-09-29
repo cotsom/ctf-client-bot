@@ -3,27 +3,20 @@ package main
 import (
 	"bot/config"
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 
 	"github.com/chromedp/chromedp"
 )
 
-type YamlConfig struct {
-	Domain   string            `yaml:"domain"`
-	Cookie   map[string]string `yaml:"cookie"`
-	HttpOnly bool              `yaml:"httpOnly"`
-}
+var configName = flag.String("f", "config.yml", "Name of the file containing the bot configuration")
 
 func main() {
-	// if len(os.Args) < 1 {
-	// 	log.Fatal("err")
-	// 	return
-	// }
+	flag.Parse()
 
 	http.HandleFunc("/", getUrl)
 
@@ -34,15 +27,12 @@ func main() {
 }
 
 func getUrl(w http.ResponseWriter, r *http.Request) {
-	configName := os.Args[1]
 
-	// domain, cookie, httpOnly := config.Parseyaml(configName)
-	configFile, err := config.Parseyaml(configName)
+	configFile, err := config.Parseyaml(*configName)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println(domain, cookie, httpOnly)
 
 	query := r.URL.Query()
 	url, present := query["url"]
@@ -57,11 +47,9 @@ func getUrl(w http.ResponseWriter, r *http.Request) {
 		url[0] = "http://" + url[0]
 	}
 
-	// create context
 	ctx, cancel := chromedp.NewContext(context.Background())
 	defer cancel()
 
-	// run task list
 	var res string
 	err = chromedp.Run(ctx, config.Setcookies(
 		&res,
@@ -71,7 +59,6 @@ func getUrl(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	// var resbot []string
 	fmt.Println(url[0])
 	err = chromedp.Run(ctx,
 		chromedp.Navigate(url[0]),

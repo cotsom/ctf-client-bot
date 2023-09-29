@@ -57,9 +57,5 @@ func Parseyaml(fileName string) (*YamlConfig, error) {
 		fmt.Printf("Error parsing YAML file: %s\n", err)
 	}
 
-	// domain := yamlConfig.Domain
-	// cookie := yamlConfig.Cookie
-	// httpOnly := yamlConfig.HttpOnly
-
 	return &yamlConfig, nil
 }
