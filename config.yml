@@ -1,6 +1,6 @@
 domain: localhost
-
 cookie:
   session: eyJ1c2VyIjoiYWRtaW4ifQ.ZRHKtg.cpgm7pblOdp3PvDcXHCckLBkLOA
   
 httpOnly: true
+timeout: 200ms
