@@ -3,7 +3,6 @@ FROM golang:1.21-alpine as build
 WORKDIR /app
 
 ADD go.* ./
-COPY config config
 RUN go mod download
 COPY bot.go .
 RUN go build -o /bot
