@@ -1,4 +1,4 @@
-module bot
+module github.com/cotsom/ctf-client-bot
 
 go 1.21
 
