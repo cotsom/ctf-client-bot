@@ -1,6 +1,10 @@
 domain: localhost
 cookie:
-  session: eyJ1c2VyIjoiYWRtaW4ifQ.ZRHKtg.cpgm7pblOdp3PvDcXHCckLBkLOA
-  
+  session: example.bot.token
+
 httpOnly: true
+
+headers:
+  User-Agent: qweqweqwe
+
 timeout: 200ms

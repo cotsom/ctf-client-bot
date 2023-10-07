@@ -20,11 +20,12 @@ import (
 var configName = flag.String("f", "config.yml", "Name of the file containing the bot configuration")
 
 type Config struct {
-	Timeout     string `yaml:"timeout"`
+	Cookie      map[string]string      `yaml:"cookie"`
+	Timeout     string                 `yaml:"timeout"`
+	Domain      string                 `yaml:"domain"`
+	HttpOnly    bool                   `yaml:"httpOnly"`
+	Headers     map[string]interface{} `yaml:"headers"`
 	PageTimeout time.Duration
-	Domain      string            `yaml:"domain"`
-	Cookie      map[string]string `yaml:"cookie"`
-	HttpOnly    bool              `yaml:"httpOnly"`
 }
 
 func initConfig() (*Config, error) {
@@ -59,6 +60,11 @@ func (c *Config) getUrl(w http.ResponseWriter, r *http.Request) {
 
 	var res string
 	err := chromedp.Run(ctx, c.Setcookies(&res))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = chromedp.Run(ctx, c.Setheaders(&res))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -112,6 +118,14 @@ func (c *Config) Setcookies(res *string) chromedp.Tasks {
 			}
 			return nil
 		}),
+	}
+}
+
+func (c *Config) Setheaders(res *string) chromedp.Tasks {
+	return chromedp.Tasks{
+		network.Enable(),
+		network.SetExtraHTTPHeaders(network.Headers(c.Headers)),
+		// chromedp.Text(`#result`, res, chromedp.ByID, chromedp.NodeVisible),
 	}
 }
 
