@@ -5,6 +5,7 @@ cookie:
 httpOnly: true
 
 headers:
-  User-Agent: qweqweqwe
+  ngrok-skip-browser-warning: value
+  # User-Agent: qweqweqwe
 
 timeout: 200ms

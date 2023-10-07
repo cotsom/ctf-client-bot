@@ -59,23 +59,15 @@ func (c *Config) getUrl(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	var res string
-	err := chromedp.Run(ctx, c.Setcookies(&res))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = chromedp.Run(ctx, c.Setheaders(&res))
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	fmt.Println(url[0])
 
-	err = chromedp.Run(ctx,
+	err := chromedp.Run(ctx,
+		c.Setcookies(&res),
+		c.Setheaders(&res),
 		chromedp.Navigate(url[0]),
 		chromedp.Sleep(c.PageTimeout),
 	)
-	//time.Sleep(2 * time.Second)
 
 	if err != nil {
 		log.Fatal(err)
@@ -122,10 +114,18 @@ func (c *Config) Setcookies(res *string) chromedp.Tasks {
 }
 
 func (c *Config) Setheaders(res *string) chromedp.Tasks {
+	fmt.Println(c.Headers)
 	return chromedp.Tasks{
-		network.Enable(),
-		network.SetExtraHTTPHeaders(network.Headers(c.Headers)),
-		// chromedp.Text(`#result`, res, chromedp.ByID, chromedp.NodeVisible),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+			// network.Enable(),
+			err := network.SetExtraHTTPHeaders(c.Headers).Do(ctx)
+			// chromedp.Text(`#result`, res, chromedp.ByID, chromedp.NodeVisible),
+
+			if err != nil {
+				return err
+			}
+			return nil
+		}),
 	}
 }
 
