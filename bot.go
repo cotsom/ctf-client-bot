@@ -70,7 +70,7 @@ func (c *Config) getUrl(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Resource is unavailable")
 	}
 }
 
